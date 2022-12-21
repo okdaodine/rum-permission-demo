@@ -6,7 +6,7 @@
 
 如果您想要在本地运行，可以参考如下步骤：
 
-## 运行一个 [Quorum](https://github.com/rumsystem/quorum) 节点
+## 运行一个 Rum 节点
 
 ```
 # 如果是 mac
@@ -26,9 +26,9 @@
 # http server started on [::]:8002
 ```
 
-很好，现在 Quorum 节点就运行在 8002 端口了
+很好，现在 Rum 节点就运行在 8002 端口了
 
-## 创建一个 Quorum Group
+## 创建一个 Rum Group
 
 另外起一个终端界面，执行：
 
@@ -48,9 +48,9 @@ curl -X POST -H 'Content-Type: application/json' -d '{"group_name":"my_test_grou
 
 将上述步骤返回的 seed 填写到 `config.js` 里面的 `seedUrl`。
 
-这样就完成了 Quorum Group 的配置啦。
+这样就完成了 Rum Group 的配置啦。
 
-好，接下来让我们开始使用这个 Quorum Group 吧。
+好，接下来让我们开始使用这个 Rum Group 吧。
 
 ## 启动前端服务
 （这个例子使用 js 开发，所以请先安装 nodejs 哦）
