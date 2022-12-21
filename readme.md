@@ -55,6 +55,8 @@ curl -X POST -H 'Content-Type: application/json' -d '{"group_name":"my_test_grou
 ## 启动前端服务
 （这个例子使用 js 开发，所以请先安装 nodejs 哦）
 
+在根目录下，运行：
+
 ```
 yarn install
 yarn dev
