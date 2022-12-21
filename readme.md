@@ -1,10 +1,12 @@
-如果你想了解如何基于 Rum 开发一个应用，这是一个非常好的例子。这个例子功能也是很简单的，但它的应用场景非常典型，所以具有参考的意义。
+如果你想了解如何基于 Rum 开发一个应用，这是一个非常好的例子。
+
+这个例子的功能是很简单的，但它的应用场景非常典型，所以具有参考的意义。
 
 这里有一个 live 版本可以让您体验一下：https://rum-demo.prsdev.club
 
 如果您想要在本地运行，可以参考如下步骤：
 
-## 运行一个 Quorum 节点
+## 运行一个 [Quorum](https://github.com/rumsystem/quorum) 节点
 
 ```
 # 如果是 mac
@@ -24,7 +26,11 @@
 # http server started on [::]:8002
 ```
 
-## 创建一个 Group
+很好，现在 Quorum 节点就运行在 8002 端口了
+
+## 创建一个 Quorum Group
+
+另外起一个终端界面，执行：
 
 ```
 curl -X POST -H 'Content-Type: application/json' -d '{"group_name":"my_test_group", "consensus_type":"poa", "encryption_type":"public", "app_key":"test_app"}' http://127.0.0.1:8002/api/v1/group
@@ -36,24 +42,33 @@ curl -X POST -H 'Content-Type: application/json' -d '{"group_name":"my_test_grou
 # }
 ```
 
+很好，我们已经创建成功了
+
 ## 将种子填写到配置文件中
 
 将上述步骤返回的 seed 填写到 `config.js` 里面的 `seedUrl`。
 
-这样就完成了 Group 的配置啦。
+这样就完成了 Quorum Group 的配置啦。
 
-Group 我们也称为种子网络。它是一条独立的链。我们通过 seed 也就是种子来使用它、分享它、加入它、同步它。
+Quorum Group 我们也称为种子网络。它是一条独立的链，我们可以让这个 Group 发送 trx，将数据存储在它里面。
 
-好，接下来让我们开始使用这个 Group 吧。
+我们通过 seed 也就是种子来使用它、分享它、加入它、同步它。
+
+好，接下来让我们开始使用这个 Quorum Group 吧。
 
 ## 启动前端服务
 （这个例子使用 js 开发，所以请先安装 nodejs 哦）
+
+另外起一个终端界面，执行：
+
 ```
 yarn install
 yarn dev
 ```
 
 ## 启动后端服务
+
+另外起一个终端界面，执行：
 
 ```
 cd server

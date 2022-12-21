@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer, useLocalObservable } from 'mobx-react-lite';
 import Feed from './Feed';
-import store from 'store2';
 import { SummaryApi } from 'apis';
 import { ISummary } from 'apis/types';
 import { API_BASE_URL } from 'apis/common';
