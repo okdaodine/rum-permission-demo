@@ -1,4 +1,4 @@
-如果你想了解如何基于 Rum 开发一个应用，这是一个非常好的例子。
+如果你想了解如何基于 [Quorum](https://github.com/rumsystem/quorum) 开发一个应用，这是一个非常好的例子。
 
 这个例子的功能是很简单的，但它的应用场景非常典型，所以具有参考的意义。
 
@@ -97,3 +97,7 @@ http://localhost:3000
 4. 如何实现用户之间的消息通知（谁评论了谁，谁点赞了谁）
 
 可以参考 [rum-feed](https://github.com/okdaodine/rum-feed) 这个产品，它也是开源的，你可以从它的功能和源码进行学习
+
+## 反馈和交流
+
+可以直接提 [Issues](https://github.com/okdaodine/rum-demo/issues)
