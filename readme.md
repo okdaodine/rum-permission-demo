@@ -6,6 +6,12 @@
 
 如果您想要在本地运行，可以参考如下步骤：
 
+## 获取代码
+
+```
+git clone https://github.com/okdaodine/rum-demo.git
+```
+
 ## 运行一个 Rum 节点
 
 ```
