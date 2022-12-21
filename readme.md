@@ -50,7 +50,7 @@ curl -X POST -H 'Content-Type: application/json' -d '{"group_name":"my_test_grou
 
 很好，我们已经创建成功了
 
-（进阶：Rum 节点更多 API 可以参考 [Rum Api](https://rumsystem.github.io/quorum-api/)）
+（进阶：Rum 节点更多 API 可以参考 [Rum API](https://rumsystem.github.io/quorum-api/)）
 
 ## 将种子填写到配置文件中
 
