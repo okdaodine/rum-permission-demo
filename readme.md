@@ -1,4 +1,4 @@
-如果你想了解如何基于 [Quorum](https://github.com/rumsystem/quorum) 开发一个应用，这是一个非常好的例子。
+如果你想了解如何基于 [Rum](https://github.com/rumsystem/quorum) 开发一个应用，这是一个非常好的例子。
 
 这个例子的功能是很简单的，但它的应用场景非常典型，所以具有参考的意义。
 
