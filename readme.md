@@ -50,10 +50,6 @@ curl -X POST -H 'Content-Type: application/json' -d '{"group_name":"my_test_grou
 
 这样就完成了 Quorum Group 的配置啦。
 
-Quorum Group 我们也称为种子网络。它是一条独立的链，我们可以让这个 Group 发送 trx，将数据存储在它里面。
-
-我们通过 seed 也就是种子来使用它、分享它、加入它、同步它。
-
 好，接下来让我们开始使用这个 Quorum Group 吧。
 
 ## 启动前端服务
