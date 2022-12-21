@@ -9,13 +9,13 @@
 ## 运行一个 Rum 节点
 
 ```
-# 如果是 mac
+# 如果是 mac，运行这句
 ./bin/quorum_darwin fullnode --peername n1 --listen /ip4/0.0.0.0/tcp/7002 --peer /ip4/94.23.17.189/tcp/10666/p2p/16Uiu2HAmGTcDnhj3KVQUwVx8SGLyKBXQwfAxNayJdEwfsnUYKK4u --configdir rum_data/config --datadir rum_data/data --keystoredir rum_data/n1keystore --jsontracer n1tracer.json --apihost 0.0.0.0 --apiport 8002 --debug false
 
-# 如果是 linux
+# 如果是 linux，运行这句
 ./bin/quorum_linux fullnode --peername n1 --listen /ip4/0.0.0.0/tcp/7002 --peer /ip4/94.23.17.189/tcp/10666/p2p/16Uiu2HAmGTcDnhj3KVQUwVx8SGLyKBXQwfAxNayJdEwfsnUYKK4u --configdir rum_data/config --datadir rum_data/data --keystoredir rum_data/n1keystore --jsontracer n1tracer.json --apihost 0.0.0.0 --apiport 8002 --debug false
 
-# 如果是 windows
+# 如果是 windows，运行这句
 ./bin/quorum_win.exe fullnode --peername n1 --listen /ip4/0.0.0.0/tcp/7002 --peer /ip4/94.23.17.189/tcp/10666/p2p/16Uiu2HAmGTcDnhj3KVQUwVx8SGLyKBXQwfAxNayJdEwfsnUYKK4u --configdir rum_data/config --datadir rum_data/data --keystoredir rum_data/n1keystore --jsontracer n1tracer.json --apihost 0.0.0.0 --apiport 8002 --debug false
 
 # --- 运行之后的结果 ---
@@ -46,7 +46,7 @@ curl -X POST -H 'Content-Type: application/json' -d '{"group_name":"my_test_grou
 
 ## 将种子填写到配置文件中
 
-将上述步骤返回的 seed 填写到 `config.js` 里面的 `seedUrl`。
+将上述步骤返回的 seed 填写到 `server/config.js` 里面的 `seedUrl`。
 
 这样就完成了 Rum Group 的配置啦。
 

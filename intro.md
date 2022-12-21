@@ -92,7 +92,7 @@ import QuorumLightNodeSDK from 'quorum-light-node-sdk';
 
 那么现在的问题就是如何通过写特定的数据，来实现你想要的功能，对吧？
 
-这个问题我觉得最好使用例子来说明，[rum-demo](https://github.com/okdaodine/rum-demo) 就是这样一个真实的例子
+这个问题我觉得最好使用例子来说明，[rum-demo](https://github.com/okdaodine/rum-demo) 就是这样一个真实的例子。
 
 你通过使用它以及阅读它的代码实现，应该就可以弄明白整个来龙去脉。
 
