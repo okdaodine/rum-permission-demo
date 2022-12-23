@@ -5,7 +5,6 @@ import qs from 'query-string';
 
 export default {
   async list(options: {
-    viewer?: string
     offset?: number
     limit?: number
   } = {}) {
