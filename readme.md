@@ -52,9 +52,25 @@ curl -X POST -H 'Content-Type: application/json' -d '{"group_name":"my_test_grou
 
 （进阶：Rum 节点更多 API 可以参考 [Rum API](https://rumsystem.github.io/quorum-api/)）
 
+## 将 Group 设置成默认只读
+
+将上述步骤返回的 `group_id`，填到下面这句命令的 `group_id`，然后运行
+
+```
+curl -X POST -H 'Content-Type: application/json' -d '{"group_id":"a1cc6193-4fc2-4eef-a192-43f2a77cd5b5", "type":"set_trx_auth_mode", "config":"{\"trx_type\":\"POST\", \"trx_auth_mode\":\"follow_alw_list\"}", "Memo":"Memo"}' http://127.0.0.1:8002/api/v1/group/chainconfig | jq 
+
+# --- 运行之后的结果 ---
+# {
+#   "group_id": "0e0defde-20fe-4f16-b265-91494401e773",
+#   "owner_pubkey": "Aq-dcPmDxYuAETHbUQbEf412etKNqX2YN8mxfmne58yl",
+#   "signature": "6bb9f11c27f304f07e74979a6398c8af82b52e4440114a1a8e84b88befec690732fb5b5f0c1b3e14461eac3c87bbc77de62c9d2211a34087306abf1acdfdd3e201",
+#   "trx_id": "ce6b7e5d-7868-41d0-bd79-034884f74b32"
+}
+```
+
 ## 将种子填写到配置文件中
 
-将上述步骤返回的 seed 填写到 `server/config.js` 里面的 `seedUrl`。
+将上上步骤返回的 seed 填写到 `server/config.js` 里面的 `seedUrl`。
 
 这样就完成了 Rum Group 的配置啦。
 
