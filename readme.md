@@ -53,7 +53,7 @@ curl -X POST -H 'Content-Type: application/json' -d '{"group_name":"my_test_grou
 将上述步骤返回的 `group_id`，填到下面这句命令的 `group_id`，然后运行
 
 ```
-curl -X POST -H 'Content-Type: application/json' -d '{"group_id":"a1cc6193-4fc2-4eef-a192-43f2a77cd5b5", "type":"set_trx_auth_mode", "config":"{\"trx_type\":\"POST\", \"trx_auth_mode\":\"follow_alw_list\"}", "Memo":"Memo"}' http://127.0.0.1:8002/api/v1/group/chainconfig
+curl -X POST -H 'Content-Type: application/json' -d '{"group_id":"your_group_id", "type":"set_trx_auth_mode", "config":"{\"trx_type\":\"POST\", \"trx_auth_mode\":\"follow_alw_list\"}", "Memo":"Memo"}' http://127.0.0.1:8002/api/v1/group/chainconfig
 
 # --- 运行之后的结果 ---
 # {
