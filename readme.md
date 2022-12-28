@@ -1,15 +1,11 @@
-如果你想了解如何基于 [Rum](https://github.com/rumsystem/quorum) 开发一个应用，这是一个非常好的例子。
-
-这个例子的功能是很简单的，但它的应用场景非常典型，所以具有参考的意义。
-
-这里有一个 live 版本可以让您体验一下：https://rum-demo.prsdev.club
+这个例子会演示如何设置 Group 的权限。默认情况下所有用户都不能发布内容，当一个用户获得权限之后就可以发了。
 
 如果您想要在本地运行，可以参考如下步骤：
 
 ## 获取代码
 
 ```
-git clone https://github.com/okdaodine/rum-demo.git
+git clone https://github.com/okdaodine/rum-permission-demo.git
 ```
 
 ## 运行一个 Rum 节点
@@ -100,24 +96,3 @@ yarn dev
 
 http://localhost:3000
 
-## 总结和进阶
-
-通过这个例子，您可以知道：
-
-1. 如何实现 post
-2. 如何实现 comment
-3. 如何实现 like
-4. 如何实现 profile
-
-如果您想实现更多功能，比如说：
-
-1. post 如何包含图片
-2. profile 如何修改头像
-3. 如何实现二级评论
-4. 如何实现用户之间的消息通知（谁评论了谁，谁点赞了谁）
-
-可以参考 [rum-feed](https://github.com/okdaodine/rum-feed) 这个产品，它也是开源的，你可以从它的功能和源码进行学习
-
-## 反馈和交流
-
-可以直接提 [Issues](https://github.com/okdaodine/rum-demo/issues)

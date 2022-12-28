@@ -1,5 +1,8 @@
 import sleep from 'utils/sleep';
+import handlePermission from './handlePermission';
+
 const BASE = '';
+
 export default async (url: any, options: any = {}) => {
   const hasEffectMethod = options.method === 'POST' || options.method === 'DELETE' || options.method === 'PUT';
   if (hasEffectMethod) {
@@ -23,8 +26,8 @@ export default async (url: any, options: any = {}) => {
   if (res.ok) {
     return resData;
   } else {
-    if (hasEffectMethod && res.status === 401) {
-      (window as any).store.modalStore.openLogin()
+    if (res.status === 400) {
+      handlePermission();
     }
     throw Object.assign(new Error(), {
       code: resData.code,

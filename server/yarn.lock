@@ -1799,10 +1799,10 @@ qs@^6.5.2:
   dependencies:
     side-channel "^1.0.4"
 
-quorum-light-node-sdk-nodejs@^0.1.36:
-  version "0.1.36"
-  resolved "https://registry.npmjs.org/quorum-light-node-sdk-nodejs/-/quorum-light-node-sdk-nodejs-0.1.36.tgz#27ac033f1b4730fac8cf297872282dba1deabe08"
-  integrity sha512-RYXcg2OoEk+3KiGMeFIjdb85AJWVQIiyuHSTyHcwF/RAdZXKf5dkB6CVnZr2nn3c14Ru1XkHw0PcxZyA24UtIw==
+quorum-light-node-sdk-nodejs@^0.1.37:
+  version "0.1.37"
+  resolved "https://registry.npmjs.org/quorum-light-node-sdk-nodejs/-/quorum-light-node-sdk-nodejs-0.1.37.tgz#aaee48edc1547b08932a91f3be1fc2dec41fd602"
+  integrity sha512-ljFxnz1+6lJiNLoEToCSmLNSO9jt6YN5nVOaGSad6APD7B0vGMT5VaaSOzCAI2JUdrbOGBzoYQTJxi1CN1QLsw==
   dependencies:
     "@types/crypto-js" "^4.1.1"
     "@types/node-localstorage" "^1.3.0"

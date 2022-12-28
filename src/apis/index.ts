@@ -4,3 +4,4 @@ export { default as CommentApi } from './comment';
 export { default as ProfileApi } from './profile';
 export { default as SummaryApi } from './summary';
 export { default as ConfigApi } from './config';
+export { default as PermissionApi } from './permission';

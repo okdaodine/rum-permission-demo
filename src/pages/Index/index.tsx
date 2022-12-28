@@ -6,6 +6,8 @@ import { ISummary } from 'apis/types';
 import { API_BASE_URL } from 'apis/common';
 import sleep from 'utils/sleep';
 import { AiOutlineGithub } from 'react-icons/ai';
+import { IoMdRefresh } from 'react-icons/io';
+import store from 'store2';
 
 export default observer(() => {
   const state = useLocalObservable(() => ({
@@ -34,10 +36,16 @@ export default observer(() => {
   return (
     <div className="mt-10 w-[600px] mx-auto">
       <Feed />
-      <div className="fixed bottom-10 right-10">
-        <a className="mt-5 p-3 text-gray-70 text-13 cursor-pointer" target="_blank" rel="noreferrer" href="https://github.com/okdaodine/rum-demo">
-          <AiOutlineGithub className="text-46" />
+      <div className="fixed bottom-5 right-10">
+        <a className="mt-5 p-3 text-[#888] cursor-pointer" target="_blank" rel="noreferrer" href="https://github.com/okdaodine/rum-demo">
+          <AiOutlineGithub className="text-40" />
         </a>
+        <span className="mt-10 p-3 text-[#888] cursor-pointer" onClick={() => {
+          store.clear();
+          window.location.reload();
+        }}>
+          <IoMdRefresh className="text-40" />
+        </span>
       </div>
 
       <div className="fixed top-[20vh] right-10 z-10 border rounded-12 border-gray-70">

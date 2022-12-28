@@ -9,6 +9,8 @@ import { ethers } from 'ethers';
 import store from 'store2';
 import { initSocket } from 'utils/socket';
 import { ConfigApi } from 'apis';
+import * as Base64 from 'js-base64';
+import * as QuorumLightNodeSDK from 'quorum-light-node-sdk';
 
 const App = observer(() => {
   const state = useLocalObservable(() => ({
@@ -25,10 +27,14 @@ const App = observer(() => {
             N: 64
           }
         });
+        const signingKey = new ethers.utils.SigningKey(wallet.privateKey);
+        const pubKeyBuffer = QuorumLightNodeSDK.utils.typeTransform.hexToUint8Array(signingKey.compressedPublicKey.replace('0x', ''));
+        const base64PubKey = Base64.fromUint8Array(pubKeyBuffer, true);
         store('keystore', keystore.replaceAll('\\', ''));
         store('password', password);
         store('address', wallet.address);
         store('privateKey', wallet.privateKey);
+        store('base64PubKey', base64PubKey);
       }
 
       const config = await ConfigApi.get();

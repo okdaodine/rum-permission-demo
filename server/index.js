@@ -18,6 +18,7 @@ const like = require('./routes/like');
 const content = require('./routes/content');
 const summary = require('./routes/summary');
 const config = require('./routes/config');
+const permission = require('./routes/permission');
 
 const {
   errorHandler,
@@ -51,6 +52,7 @@ router.use('/api/likes', like.routes(), like.allowedMethods());
 router.use('/api/contents', content.routes(), content.allowedMethods());
 router.use('/api/summary', summary.routes(), summary.allowedMethods());
 router.use('/api/config', config.routes(), config.allowedMethods());
+router.use('/api/permission', permission.routes(), permission.allowedMethods());
 
 app.use(router.routes(), router.allowedMethods());
 

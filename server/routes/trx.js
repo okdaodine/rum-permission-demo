@@ -14,7 +14,9 @@ async function sendTrx(ctx) {
     const res = await QuorumLightNodeSDK.chain.Trx.send(group.groupId, payload);
     ctx.body = res;
   } catch (err) {
-    console.log(err);
+    if (err.response.status === 403) {
+      throws(Errors.ERR_NO_PERMISSION('post'));
+    }
     throws(Errors.ERR_IS_REQUEST_FAILED());
   }
 }
