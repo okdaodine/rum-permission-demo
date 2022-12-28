@@ -96,3 +96,6 @@ yarn dev
 
 http://localhost:3000
 
+## 参考资料
+
+- [quorum chainconfig](https://github.com/rumsystem/quorum/blob/main/Tutorial.md#test-chainconfig)
