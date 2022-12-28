@@ -48,8 +48,6 @@ curl -X POST -H 'Content-Type: application/json' -d '{"group_name":"my_test_grou
 
 很好，我们已经创建成功了
 
-（进阶：Rum 节点更多 API 可以参考 [Rum API](https://rumsystem.github.io/quorum-api/)）
-
 ## 将 Group 设置成默认只读
 
 将上述步骤返回的 `group_id`，填到下面这句命令的 `group_id`，然后运行
