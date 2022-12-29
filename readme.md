@@ -50,7 +50,7 @@ curl -X POST -H 'Content-Type: application/json' -d '{"group_name":"my_test_grou
 
 ## 将 Group 设置成默认只读
 
-将上述步骤返回的 `group_id`，填到下面这句命令的 `group_id`，然后运行
+将上述步骤返回的 `group_id`，填到下面这句命令的 `your_group_id`，然后运行
 
 ```
 curl -X POST -H 'Content-Type: application/json' -d '{"group_id":"your_group_id", "type":"set_trx_auth_mode", "config":"{\"trx_type\":\"POST\", \"trx_auth_mode\":\"follow_alw_list\"}", "Memo":"Memo"}' http://127.0.0.1:8002/api/v1/group/chainconfig
