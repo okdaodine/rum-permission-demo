@@ -23,8 +23,12 @@ const ProfileEditor = observer((props: IProps) => {
       if (!state.name) {
         return;
       }
-      const res = await TrxApi.createPerson({
-        name: state.name
+      const res = await TrxApi.createActivity({
+        type: 'Create',
+        object: {
+          type: 'Person',
+          name: state.name
+        }
       });
       console.log(res);
       const profile = {
@@ -40,11 +44,11 @@ const ProfileEditor = observer((props: IProps) => {
 
   return (
     <div className="w-[300px] p-8 pt-6">
-      <div className="text-18 text-center font-bold pb-4">修改个人资料</div>
+      <div className="text-18 text-center font-bold pb-4">Edit profile</div>
       <div>
         <TextField
           className="w-full"
-          placeholder="昵称"
+          placeholder="nickname"
           size="small"
           value={state.name}
           onChange={(e) => { state.name = e.target.value; }}
@@ -54,7 +58,7 @@ const ProfileEditor = observer((props: IProps) => {
         />
       </div>
       <div className="mt-5 flex justify-center">
-        <Button onClick={addProfile}>保存</Button>
+        <Button onClick={addProfile}>Save</Button>
       </div>
     </div>
   )

@@ -19,7 +19,7 @@ const App = observer(() => {
 
   React.useEffect(() => {
     (async () => {
-      if (!store('address')) {
+      if (!store('address') || !store('base64PubKey')) {
         const wallet = ethers.Wallet.createRandom();
         const password = "123";
         const keystore = await wallet.encrypt(password, {

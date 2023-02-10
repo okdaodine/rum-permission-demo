@@ -4,6 +4,7 @@ import { TrxStorage } from 'apis/common';
 import { TrxApi } from 'apis';
 import classNames from 'classnames';
 import { HiOutlineRefresh } from 'react-icons/hi';
+import { AiOutlineHeart } from 'react-icons/ai';
 
 interface IProps {
   comment: IComment,
@@ -20,15 +21,22 @@ export default observer((props: IProps) => {
   const { comment } = props;
   const profileName = comment.extra!.profile ? comment.extra!.profile.name : comment.userAddress.slice(0, 10);
 
-  const updateCounter = async (trxId: string) => {
+  const updateCounter = async () => {
     if (state.submitting) {
       return;
     }
     state.submitting = true;
     try {
-      await TrxApi.createObject({
-        id: trxId,
-        type: comment.extra.liked ? 'Dislike' : 'Like'
+      await TrxApi.createActivity({
+        type: comment.extra.liked ? 'Dislike' : 'Like',
+        object: {
+          type: 'Note',
+          id: comment.id,
+          inreplyto: {
+            type: 'Note',
+            id: comment.to
+          }
+        }
       });
       props.onCommentChanged({
         ...comment,
@@ -54,18 +62,17 @@ export default observer((props: IProps) => {
         <div className="mt-2 text-gray-500">
           {comment.content}
         </div>
-        <div className="mt-3 opacity-60 text-12 flex items-center">
+        <div className="mt-3 text-gray-700/60 text-12 flex items-center">
           <div className={classNames({
             'text-sky-500 font-bold': comment.extra!.liked
-          }, "mr-8 cursor-pointer")} onClick={() => {
-            updateCounter(comment.trxId);
+          }, "mr-8 cursor-pointer flex items-center")} onClick={() => {
+            updateCounter();
           }}>
-              赞 {comment.extra.likeCount || ''}
+              <AiOutlineHeart className="text-18 mr-1" /> {comment.extra.likeCount || ''}
           </div>
           <div className="mr-8 flex items-center">
-            {comment.storage === TrxStorage.cache ? '同步中' : '已同步'}
             {comment.storage === TrxStorage.cache && (
-              <HiOutlineRefresh className="text-14 animate-spin ml-1" />
+              <HiOutlineRefresh className="text-18 animate-spin opacity-70" />
             )}
           </div>
         </div>

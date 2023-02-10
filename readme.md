@@ -1,90 +1,88 @@
-这个例子会演示如何设置 Group 的权限。
+This example will demonstrate how to set permissions for Group.
 
-默认情况下所有用户都不能发布内容，当一个用户获得权限之后就可以发了。
+If a group is required permission, all users cannot publish content by default and a user can post after getting permission.
 
-如果您想要在本地运行，可以参考如下步骤：
+If you want to run the server on your computer, you can follow these steps:
 
-## 获取代码
+## Clone code
 
 ```
 git clone https://github.com/okdaodine/rum-permission-demo.git
 ```
 
-## 运行一个 Rum 节点
+## Run a Quorum node
 
 ```
-# 如果是 mac，运行这句
+# On mac, run:
 ./bin/quorum_darwin fullnode --peername n1 --listen /ip4/0.0.0.0/tcp/7002 --peer /ip4/94.23.17.189/tcp/10666/p2p/16Uiu2HAmGTcDnhj3KVQUwVx8SGLyKBXQwfAxNayJdEwfsnUYKK4u --configdir rum_data/config --datadir rum_data/data --keystoredir rum_data/n1keystore --jsontracer rum_data/n1tracer.json --apihost 0.0.0.0 --apiport 8002 --debug false
 
-# 如果是 linux，运行这句
+# On linux, run:
 ./bin/quorum_linux fullnode --peername n1 --listen /ip4/0.0.0.0/tcp/7002 --peer /ip4/94.23.17.189/tcp/10666/p2p/16Uiu2HAmGTcDnhj3KVQUwVx8SGLyKBXQwfAxNayJdEwfsnUYKK4u --configdir rum_data/config --datadir rum_data/data --keystoredir rum_data/n1keystore --jsontracer rum_data/n1tracer.json --apihost 0.0.0.0 --apiport 8002 --debug false
 
-# 如果是 windows，运行这句
+# On windows, run:
 ./bin/quorum_win.exe fullnode --peername n1 --listen /ip4/0.0.0.0/tcp/7002 --peer /ip4/94.23.17.189/tcp/10666/p2p/16Uiu2HAmGTcDnhj3KVQUwVx8SGLyKBXQwfAxNayJdEwfsnUYKK4u --configdir rum_data/config --datadir rum_data/data --keystoredir rum_data/n1keystore --jsontracer rum_data/n1tracer.json --apihost 0.0.0.0 --apiport 8002 --debug false
 
-# --- 运行之后的结果 ---
+# --- Result after running ---
 # Enter passphrase (leave empty to autogenerate a secure one):
 # Confirm passphrase:
-# ...
-# ...
+#...
+#...
 # http server started on [::]:8002
 ```
 
-很好，现在 Rum 节点就运行在 8002 端口了
+Great, now the Rum node is running on port 8002
 
-## 创建一个 Rum Group
+## Create a Rum Group
 
-另外起一个终端界面，执行：
+In addition, start a terminal interface and execute:
 
 ```
-curl -X POST -H 'Content-Type: application/json' -d '{"group_name":"my_test_group", "consensus_type":"poa", "encryption_type":"public", "app_key":"test_app"}' http://127.0.0.1:8002/api/v1/group
+curl -X POST -H 'Content-Type: application/json' -d '{"group_name":"my_test_group", "consensus_type":"poa", "encryption_type":"public", "app_key":"test_app" }' http://127.0.0.1:8002/api/v1/group
 
-# --- 运行之后的结果 ---
+# --- Result after running ---
 # {
-#   "seed": "rum://seed?v=1\u0026e=0\u0026n=0\u0026b=MIDID-cdS8e6nlL....",
-#   "group_id": "a1cc6193-4fc2-4eef-a192-43f2a77cd5b5"
+# "seed": "rum://seed?v=1\u0026e=0\u0026n=0\u0026b=MIDID-cdS8e6nlL....",
+# "group_id": "a1cc6193-4fc2-4eef-a192-43f2a77cd5b5"
 # }
 ```
 
-很好，我们已经创建成功了
+Great, we have successfully created a group.
 
-## 将 Group 设置成默认只读
+## Set the Group to be read-only by default
 
-将上述步骤返回的 `group_id`，填到下面这句命令的 `your_group_id`，然后运行
+Fill the `group_id` returned by the above steps into `your_group_id` of the following command, and then run
 
 ```
 curl -X POST -H 'Content-Type: application/json' -d '{"group_id":"your_group_id", "type":"set_trx_auth_mode", "config":"{\"trx_type\":\"POST\", \"trx_auth_mode\":\"follow_alw_list\"}", "Memo":"Memo"}' http://127.0.0.1:8002/api/v1/group/chainconfig
 
-# --- 运行之后的结果 ---
+# --- Result after running ---
 # {
-#   "group_id": "0e0defde-20fe-4f16-b265-91494401e773",
-#   "owner_pubkey": "Aq-dcPmDxYuAETHbUQbEf412etKNqX2YN8mxfmne58yl",
-#   "signature": "6bb9f11c27f304f07e74979a6398c8af82b52e4440114a1a8e84b88befec690732fb5b5f0c1b3e14461eac3c87bbc77de62c9d2211a34087306abf1acdfdd3e201",
-#   "trx_id": "ce6b7e5d-7868-41d0-bd79-034884f74b32"
+# "group_id": "0e0defde-20fe-4f16-b265-91494401e773",
+# "owner_pubkey": "Aq-dcPmDxYuAETHbUQbEf412etKNqX2YN8mxfmne58yl",
+# "signature": "6bb9f11c27f304f07e74979a6398c8af82b52e4440114a1a8e84b88befec690732fb5b5f0c1b3e14461eac3c87bbc77de62c9d2211a34087306abf1acd1fdd3e20
+# "trx_id": "ce6b7e5d-7868-41d0-bd79-034884f74b32"
 }
 ```
 
-## 将种子填写到配置文件中
+## Fill in the seed into the configuration file
 
-将上上步骤返回的 seed 填写到 `server/config.js` 里面的 `seedUrl`。
+Fill in the seed returned by the above steps into `seedUrl` in `server/config.js`.
 
-这样就完成了 Rum Group 的配置啦。
+Done! Let's use this Rum Group.
 
-好，接下来让我们开始使用这个 Rum Group 吧。
+## Start the front-end service
+(This example is developed using Javascript, so please install nodejs first)
 
-## 启动前端服务
-（这个例子使用 js 开发，所以请先安装 nodejs 哦）
-
-在根目录下，运行：
+On the root directory, run:
 
 ```
 yarn install
 yarn dev
 ```
 
-## 启动后端服务
+## Start the backend service
 
-另外起一个终端界面，执行：
+Start a new terminal interface and run:
 
 ```
 cd server
@@ -92,6 +90,6 @@ yarn install
 yarn dev
 ```
 
-## 访问服务
+## access service
 
 http://localhost:3000

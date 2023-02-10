@@ -5,6 +5,7 @@ import { TrxStorage } from 'apis/common';
 import { TrxApi, ProfileApi } from 'apis';
 import store from 'store2';
 import Dialog from 'components/Dialog';
+import * as uuid from 'uuid';
 
 export interface ICommentContext {
   to: string
@@ -25,12 +26,18 @@ const Editor = observer((props: IProps) => {
   }));
 
   const submitComment = async (content: string) => {
-    const res = await TrxApi.createObject({
-      inreplyto: {
-        trxid: props.commentContext.to
-      },
-      content,
-      type: 'Note'
+    const id = uuid.v4();
+    const res = await TrxApi.createActivity({
+      type: 'Create',
+      object: {
+        type: 'Note',
+        id,
+        content,
+        inreplyto: {
+          type: 'Note',
+          id: props.commentContext.to
+        }
+      }
     });
     console.log(res);
     if (props.comment && props.onCommentChanged) {
@@ -44,6 +51,7 @@ const Editor = observer((props: IProps) => {
       props.addComment({
         to: props.commentContext.to,
         trxId: res.trx_id,
+        id,
         content,
         userAddress: store('address'),
         timestamp: Date.now(),
@@ -63,7 +71,7 @@ const Editor = observer((props: IProps) => {
     <div className="w-[600px] p-8 pt-6">
       <TextField
         className="w-full"
-        placeholder="说点什么..."
+        placeholder="What's happening?"
         size="small"
         multiline
         autoFocus

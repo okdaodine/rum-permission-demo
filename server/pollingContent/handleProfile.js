@@ -1,5 +1,5 @@
 const db = require('../utils/db');
-const QuorumLightNodeSDK = require('quorum-light-node-sdk-nodejs');
+const SDK = require('rum-sdk-nodejs');
 
 module.exports = async (item) => {
   console.log('handle profile', item);
@@ -7,14 +7,16 @@ module.exports = async (item) => {
   const {
     TrxId,
     Data: {
-      name,
+      object: {
+        name
+      }
     },
     SenderPubkey,
   } = item;
   db.data.profiles.unshift({
     trxId: TrxId,
     name,
-    userAddress: QuorumLightNodeSDK.utils.pubkeyToAddress(SenderPubkey),
+    userAddress: SDK.utils.pubkeyToAddress(SenderPubkey),
   });
   await db.write();
 }

@@ -4,6 +4,7 @@ import { IPost } from 'apis/types';
 import { TrxStorage } from 'apis/common';
 import { TrxApi } from 'apis';
 import Dialog from 'components/Dialog';
+import * as uuid from 'uuid';
 
 interface IProps {
   open: boolean
@@ -18,9 +19,14 @@ const Editor = observer((props: IProps) => {
   }));
 
   const submitPost = async (content: string) => {
-    const res = await TrxApi.createObject({
-      content,
-      type: 'Note'
+    const id = uuid.v4();
+    const res = await TrxApi.createActivity({
+      type: 'Create',
+      object: {
+        type: "Note",
+        id,
+        content,
+      }
     });
     console.log(res);
     state.content = '';

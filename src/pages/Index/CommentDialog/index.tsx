@@ -21,8 +21,8 @@ interface IProps {
 const CommentContainer = observer((props: IProps) => {
   const state = useLocalObservable(() => ({
     content: '',
-    trxIds: [] as string[],
-    subTrxIdsMap: {} as Record<string, string[]>,
+    ids: [] as string[],
+    subIdsMap: {} as Record<string, string[]>,
     commentMap: {} as Record<string, IComment>,
     showEditorDialog: false
   }));
@@ -31,7 +31,7 @@ const CommentContainer = observer((props: IProps) => {
     (async () => {
       try {
         const comments = await CommentApi.list({
-          to: props.post.trxId,
+          to: props.post.id,
           viewer: store('address'),
           limit: 200
         });
@@ -50,8 +50,8 @@ const CommentContainer = observer((props: IProps) => {
     const listener = async (comment: IComment) => {
       console.log('received a comment');
       console.log({ comment });
-      if (state.commentMap[comment.trxId]) {
-        state.commentMap[comment.trxId].storage = TrxStorage.chain;
+      if (state.commentMap[comment.id]) {
+        state.commentMap[comment.id].storage = TrxStorage.chain;
       }
     }
     getSocket().on('comment', listener);
@@ -62,8 +62,8 @@ const CommentContainer = observer((props: IProps) => {
 
   const addCommentToState = (comment: IComment) => {
     runInAction(() => {
-      state.commentMap[comment.trxId] = comment;
-      state.trxIds.push(comment.trxId);
+      state.commentMap[comment.id] = comment;
+      state.ids.push(comment.id);
     });
   }
 
@@ -80,34 +80,34 @@ const CommentContainer = observer((props: IProps) => {
 
   return (
     <div className="w-[600px] p-8 pt-6">
-      <div className="text-18 text-center font-bold pb-4">评论</div>
+      <div className="text-18 text-center font-bold pb-4">Comment</div>
       
       <div className="py-5 w-full">
         <Button className="mx-auto block" onClick={() => {
           state.showEditorDialog = true;
-        }}>添加评论</Button>
+        }}>Add a comment</Button>
       </div>
 
       <div className="mt-5">
-        {state.trxIds.map((trxId) => {
-          const subTrxIds = state.subTrxIdsMap[trxId] || [];
+        {state.ids.map((id) => {
+          const subIds = state.subIdsMap[id] || [];
           return (
-            <div key={trxId} className="mb-4">
+            <div key={id} className="mb-4">
               <CommentItem
-                comment={state.commentMap[trxId]}
+                comment={state.commentMap[id]}
                 addComment={addComment}
                 onCommentChanged={async (comment) => {
-                  state.commentMap[comment.trxId] = comment;
+                  state.commentMap[comment.id] = comment;
                 }}
               />
-              {subTrxIds.map((subTrxId) => (
-                <div key={subTrxId} className="ml-6 mt-4">
-                  {state.commentMap[subTrxId] && (
+              {subIds.map((subId) => (
+                <div key={subId} className="ml-6 mt-4">
+                  {state.commentMap[subId] && (
                     <CommentItem
-                      comment={state.commentMap[subTrxId]}
+                      comment={state.commentMap[subId]}
                       addComment={addComment}
                       onCommentChanged={async (comment) => {
-                        state.commentMap[comment.trxId] = comment;
+                        state.commentMap[comment.id] = comment;
                       }}
                     />
                   )}
@@ -124,7 +124,7 @@ const CommentContainer = observer((props: IProps) => {
           state.showEditorDialog = false;
         }}
         commentContext={{
-          to: props.post.trxId,
+          to: props.post.id,
         }}
         addComment={addComment}
       />

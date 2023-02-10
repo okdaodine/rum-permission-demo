@@ -10,12 +10,15 @@ import store from 'store2';
 import { isEmpty } from 'lodash';
 import { PostApi, ProfileApi, TrxApi } from 'apis';
 import { getSocket } from 'utils/socket';
+import * as uuid from 'uuid';
+import { useStore } from 'store';
+import { AiOutlineEdit } from 'react-icons/ai';
 
 export default observer(() => {
   const state = useLocalObservable(() => ({
     content: '',
     searchInput: '',
-    trxIds: [] as string[],
+    ids: [] as string[],
     postMap: {} as Record<string, IPost>,
     profileMap: {} as Record<string, IProfile>,
     showProfileEditorModal: false,
@@ -24,19 +27,23 @@ export default observer(() => {
       return state.profileMap[store('address')]
     }
   }));
+  const { confirmDialogStore } = useStore();
   const profileName = state.myProfile ? state.myProfile.name : store('address').slice(0, 10);
 
   React.useEffect(() => {
-    const listener = (post: IPost) => {
+    const onNewPost = (post: IPost) => {
       console.log('received a post', post);
       console.log({ post });
-      if (state.postMap[post.trxId]) {
-        state.postMap[post.trxId].storage = TrxStorage.chain;
+      if (state.postMap[post.id]) {
+        state.postMap[post.id].storage = TrxStorage.chain;
+        if (!state.ids.includes(post.id)) {
+          state.ids.unshift(post.id)
+        }
       }
     }
-    getSocket().on('post', listener);
+    getSocket().on('post', onNewPost);
     return () => {
-      getSocket().off('post', listener);
+      getSocket().off('post', onNewPost);
     }
   }, []);
 
@@ -44,7 +51,7 @@ export default observer(() => {
     (async () => {
       try {
         runInAction(() => {
-          state.trxIds = [];
+          state.ids = [];
           state.postMap = {};
         })
 
@@ -54,8 +61,8 @@ export default observer(() => {
         });
         runInAction(() => {
           for (const post of posts) {
-            state.trxIds.push(post.trxId);
-            state.postMap[post.trxId] = post;
+            state.ids.push(post.id);
+            state.postMap[post.id] = post;
           }
         });
       } catch (err) {
@@ -78,15 +85,21 @@ export default observer(() => {
   }, []);
 
   const submitPost = async (content: string) => {
-    const res = await TrxApi.createObject({
-      content,
-      type: 'Note'
+    const id = uuid.v4();
+    const res = await TrxApi.createActivity({
+      type: 'Create',
+      object: {
+        type: "Note",
+        id,
+        content,
+      }
     });
     console.log(res);
     const post = {
       content,
       userAddress: store('address'),
       trxId: res.trx_id,
+      id,
       storage: TrxStorage.cache,
       timestamp: Date.now(),
       extra: {
@@ -96,17 +109,37 @@ export default observer(() => {
         commentCount: 0,
       }
     };
-    state.trxIds.unshift(post.trxId);
-    state.postMap[post.trxId] = post;
+    state.ids.unshift(post.id);
+    state.postMap[post.id] = post;
     state.content = '';
   }
 
   const onPostChanged = async (post: IPost) => {
-    state.postMap[post.trxId] = post;
+    state.postMap[post.id] = post;
   }
 
   const onProfileChanged = async (profile: IProfile) => {
     state.profileMap[profile.userAddress] = profile;
+  }
+
+  const onPostDelete = (postId: string) => {
+    confirmDialogStore.show({
+      content: `Are you sure to delete?`,
+      ok: async () => {
+        confirmDialogStore.setLoading(true);
+        await TrxApi.createActivity({
+          type: 'Delete',
+          object: {
+            type: "Note",
+            id: postId,
+          }
+        });
+        state.ids = state.ids.filter(_id => _id !== postId);
+        delete state.postMap[postId];
+        confirmDialogStore.hide();
+        confirmDialogStore.setLoading(false);
+      }
+    })
   }
 
   return (
@@ -115,9 +148,11 @@ export default observer(() => {
         <div className="flex items-center text-gray-700 mb-2">
           <img src={`https://ui-avatars.com/api/?name=${profileName.slice(-1)}`} alt="avatar" className="w-[32px] h-[32px] rounded-full mr-3" />
           <div>{profileName}</div>
-          <div className="text-12 text-blue-400 ml-3 cursor-pointer" onClick={() => {
+          <div className="text-18 text-blue-400 ml-3 cursor-pointer" onClick={() => {
             state.showProfileEditorModal = true;
-          }}>修改</div>
+          }}>
+            <AiOutlineEdit />
+          </div>
           <ProfileEditorDialog
             open={state.showProfileEditorModal}
             onClose={() => {
@@ -130,7 +165,7 @@ export default observer(() => {
       </div>
       <TextField
         className="w-full"
-        placeholder="说点什么..."
+        placeholder="What's happening?"
         size="small"
         multiline
         minRows={3}
@@ -148,16 +183,18 @@ export default observer(() => {
       />
 
       <div className="mt-5">
-        {state.trxIds.map((trxId) => (
-          <div key={trxId}>
-            <PostItem post={state.postMap[trxId]} onPostChanged={onPostChanged} onDeletePost={trxId => {
-              state.trxIds = state.trxIds.filter(id => id !== trxId);
-              delete state.postMap[trxId];
-            }} />
+        {state.ids.map((id) => (
+          <div key={id}>
+            <PostItem 
+              post={state.postMap[id]}
+              onPostChanged={onPostChanged}
+              onDeletePost={() => {
+                onPostDelete(id)
+              }}
+            />
           </div>
         ))}
       </div>
     </div>
   )
 });
-

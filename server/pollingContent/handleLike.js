@@ -1,13 +1,15 @@
 const db = require('../utils/db');
-const QuorumLightNodeSDK = require('quorum-light-node-sdk-nodejs');
+const SDK = require('rum-sdk-nodejs');
 
 module.exports = async (item) => {
   console.log('handle like', item);
   const {
     TrxId,
     Data: {
-      id,
       type,
+      object: {
+        id,
+      }
     },
     SenderPubkey,
     TimeStamp,
@@ -17,7 +19,7 @@ module.exports = async (item) => {
     trxId: TrxId,
     to: id,
     value: type === 'Like' ? 1 : -1,
-    userAddress: QuorumLightNodeSDK.utils.pubkeyToAddress(SenderPubkey),
+    userAddress: SDK.utils.pubkeyToAddress(SenderPubkey),
     timestamp: parseInt(String(TimeStamp / 1000000), 10)
   });
   await db.write();

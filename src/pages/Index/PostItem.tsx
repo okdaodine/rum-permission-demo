@@ -6,6 +6,8 @@ import { TrxStorage } from 'apis/common';
 import { TrxApi } from 'apis';
 import classNames from 'classnames';
 import { HiOutlineRefresh } from 'react-icons/hi';
+import { FaRegComment } from 'react-icons/fa';
+import { AiOutlineHeart } from 'react-icons/ai';
 
 interface IProps {
   post: IPost,
@@ -22,15 +24,18 @@ export default observer((props: IProps) => {
   }));
   const profileName = post.extra.profile?.name || '';
 
-  const updateCounter = async (trxId: string) => {
+  const updateCounter = async () => {
     if (state.submitting) {
       return;
     }
     state.submitting = true;
     try {
-      await TrxApi.createObject({
-        id: trxId,
-        type: post.extra.liked ? 'Dislike' : 'Like'
+      await TrxApi.createActivity({
+        type: post.extra.liked ? 'Dislike' : 'Like',
+        object: {
+          type: 'Note',
+          id: post.id,
+        }
       });
       props.onPostChanged({
         ...post,
@@ -54,23 +59,22 @@ export default observer((props: IProps) => {
         <div className="mt-[6px] text-gray-500">
           {post.content}
         </div>
-        <div className="mt-3 opacity-60 text-12 flex items-center">
+        <div className="mt-3 opacity-90 text-12 flex items-center text-gray-700/60">
           <div className={classNames({
             'text-sky-500 font-bold': post.extra!.liked
-          }, "mr-8 cursor-pointer")} onClick={() => {
-            updateCounter(post.trxId);
+          }, "mr-8 cursor-pointer flex items-center")} onClick={() => {
+            updateCounter();
           }}>
-              赞 {post.extra.likeCount || ''}
+              <AiOutlineHeart className="text-18 mr-1" /> {post.extra.likeCount || ''}
           </div>
-          <div className="mr-8 cursor-pointer" onClick={() => {
+          <div className="mr-8 cursor-pointer flex items-center" onClick={() => {
             state.showCommentDialog = true;
           }}>
-              评论 {post.extra.commentCount || ''}
+              <FaRegComment className="text-16 mr-1 opacity-80" /> {post.extra.commentCount || ''}
           </div>
           <div className="mr-8 flex items-center">
-            {post.storage === TrxStorage.cache ? '同步中' : '已同步'}
             {post.storage === TrxStorage.cache && (
-              <HiOutlineRefresh className="text-14 animate-spin ml-1" />
+              <HiOutlineRefresh className="text-18 animate-spin opacity-70" />
             )}
           </div>
         </div>

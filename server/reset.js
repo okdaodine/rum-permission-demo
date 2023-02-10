@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
-const QuorumLightNodeSDK = require('quorum-light-node-sdk-nodejs');
+const SDK = require('rum-sdk-nodejs');
 
 (async () => {
   fs.rmSync(path.join(__dirname, 'db.json'), { recursive: true, force: true });
-  QuorumLightNodeSDK.cache.Group.clear();
+  SDK.cache.Group.clear();
   console.log('Removed local data ✅ ');
 })();

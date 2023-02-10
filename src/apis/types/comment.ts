@@ -4,6 +4,7 @@ import { TrxStorage } from '../common';
 export interface IComment {
   to: string
   trxId: string
+  id: string
   content: string
   userAddress: string
   timestamp: number

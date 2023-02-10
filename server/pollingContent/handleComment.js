@@ -1,5 +1,5 @@
 const db = require('../utils/db');
-const QuorumLightNodeSDK = require('quorum-light-node-sdk-nodejs');
+const SDK = require('rum-sdk-nodejs');
 const { getSocketIo } = require('../socket');
 
 module.exports = async (item) => {
@@ -8,17 +8,21 @@ module.exports = async (item) => {
   const {
     TrxId,
     Data: {
-      inreplyto,
-      content
+      object: {
+        id,
+        inreplyto,
+        content
+      }
     },
     SenderPubkey,
     TimeStamp,
   } = item;
   const comment = {
     trxId: TrxId,
-    to: inreplyto.trxid,
+    id,
+    to: inreplyto.id,
     content,
-    userAddress: QuorumLightNodeSDK.utils.pubkeyToAddress(SenderPubkey),
+    userAddress: SDK.utils.pubkeyToAddress(SenderPubkey),
     timestamp: parseInt(String(TimeStamp / 1000000), 10)
   };
   db.data.comments.push(comment);

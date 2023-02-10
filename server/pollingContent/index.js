@@ -1,4 +1,4 @@
-const QuorumLightNodeSDK = require('quorum-light-node-sdk-nodejs');
+const SDK = require('rum-sdk-nodejs');
 const sleep = require('../utils/sleep');
 const handlePost = require('./handlePost');
 const handleComment = require('./handleComment');
@@ -12,8 +12,8 @@ const moment = require('moment');
 const LIMIT = 50;
 let startTrx;
 
-QuorumLightNodeSDK.cache.Group.clear();
-QuorumLightNodeSDK.cache.Group.add(config.seedUrl);
+SDK.cache.Group.clear();
+SDK.cache.Group.add(config.seedUrl);
 
 module.exports = (duration) => {
   let stop = false;
@@ -23,7 +23,7 @@ module.exports = (duration) => {
     startTrx = db.data.startTrx;
     while (!stop) {
       try {
-        const group = QuorumLightNodeSDK.cache.Group.list()[0];
+        const group = SDK.cache.Group.list()[0];
         const listOptions = {
           groupId: group.groupId,
           count: LIMIT,
@@ -32,8 +32,8 @@ module.exports = (duration) => {
         if (startTrx) {
           listOptions.startTrx = startTrx;
         }
-        const contents = await QuorumLightNodeSDK.chain.Content.list(listOptions);
-        console.log(`${moment().format('YYYY-MM-DD mm:ss')}, fetched, got ${contents.length} contents`);
+        const contents = await SDK.chain.Content.list(listOptions);
+        console.log(`${moment().format('HH:mm:ss')}, fetched, got ${contents.length} contents`);
         if (contents.length > 0) {
           await handleContents(contents.sort((a, b) => a.TimeStamp - b.TimeStamp));
         }
@@ -47,15 +47,20 @@ module.exports = (duration) => {
 
 const handleContents = async (contents) => {
   try {
+    await db.read();
     for (const content of contents) {
       try {
+        const exist = db.data.contents.find(c => c.TrxId === content.TrxId);
+        if (exist) {
+          continue;
+        }
         const type = getTrxType(content);
         switch(type) {
           case 'post': await handlePost(content); break;
           case 'comment': await handleComment(content); break;
           case 'like': await handleLike(content); break;
           case 'profile': await handleProfile(content); break;
-          default: break;
+          default: console.log('unknown type'); console.log(content); break;
         }
         console.log(`${content.TrxId} ✅`);
       } catch (err) {
@@ -63,7 +68,6 @@ const handleContents = async (contents) => {
         console.log(err);
         console.log(`${content.TrxId} ❌ ${err.message}`);
       }
-      await db.read();
       db.data.contents.unshift(content);
       db.data.startTrx = content.TrxId;
       startTrx = db.data.startTrx;
