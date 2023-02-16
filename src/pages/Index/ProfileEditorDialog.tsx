@@ -26,8 +26,12 @@ const ProfileEditor = observer((props: IProps) => {
       const res = await TrxApi.createActivity({
         type: 'Create',
         object: {
-          type: 'Person',
-          name: state.name
+          type: 'Profile',
+          name: state.name,
+          describes: {
+            type: 'Person',
+            id: store('address')
+          },
         }
       });
       console.log(res);

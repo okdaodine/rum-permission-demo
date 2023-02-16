@@ -1,7 +1,7 @@
 const router = require('koa-router')();
 const axios = require('axios');
 const config = require('../config');
-const QuorumLightNodeSDK = require('quorum-light-node-sdk-nodejs');
+const SDK = require('rum-sdk-nodejs');
 const { assert, Errors } = require('../utils/validator');
 
 router.get('/:pubKey', get);
@@ -27,7 +27,7 @@ async function tryAdd(ctx) {
 
 const getChainAuth = async (pubKey) => {
   try {
-    const group = QuorumLightNodeSDK.utils.seedUrlToGroup(config.seedUrl);
+    const group = SDK.utils.seedUrlToGroup(config.seedUrl);
     const { origin } = new URL(group.chainAPIs[0]);
     const res = await axios.get(`${origin}/api/v1/group/${group.groupId}/trx/allowlist`);
     const allowList = res.data || [];
@@ -40,7 +40,7 @@ const getChainAuth = async (pubKey) => {
 
 const updateChainAuth = async (pubKey, action) => {
   try {
-    const group = QuorumLightNodeSDK.utils.seedUrlToGroup(config.seedUrl);
+    const group = SDK.utils.seedUrlToGroup(config.seedUrl);
     const payload = {
       group_id: group.groupId,
       type: 'upd_alw_list',
